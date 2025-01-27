@@ -4,8 +4,16 @@ const mongoose=require('mongoose');
 const itemController=async(req,res)=>{
     try{
        const itemData=req.body;
-       
-       await itemModel.create(itemData);           //wait for the task to be finished.
+       const {restaurantId}=itemData;
+
+       const restaurant=await resModel.findById(restaurantId);
+       if (!restaurant){
+        return res.status(404).json({message:"Restaurant not found"});
+        }
+
+       const item= await itemModel.create(itemData);//wait for the task to be finished.
+       restaurant.items.push(item._id);
+       await restaurant.save();
        res.status(201).send({message:"Item created successfully"});
 
     }catch(er){

@@ -5,6 +5,10 @@ const itemSchema=new mongoose.Schema({
     },
     price:{
         type:Number,
+    },
+    restaurant:{
+        type:mongoose.Types.ObjectId,
+        ref: "restaurant",
     }
 });
 
